@@ -49,8 +49,8 @@ def create_kddcup_value_record(item):
     }
 
 topic = "kddcup"
-value_schema = avro.load('key.avsc')
-key_schema = avro.load('value.avsc')
+value_schema = avro.load('value.avsc')
+key_schema = avro.load('key.avsc')
 
 avroProducer = AvroProducer(
         {'bootstrap.servers': 'broker:9092', 'schema.registry.url': 'http://schema_registry:8081'},
