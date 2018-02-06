@@ -1,0 +1,20 @@
+RUN apt-get update; \
+    apt-get install -y \
+        libpq-dev  \
+	    libffi-dev \
+	    libssl-dev \
+	    unzip \
+	    wget
+
+# Without this requirements.txt breaks pip
+RUN pip install "pip==7.1.2"
+
+RUN wget https://github.com/edenhill/librdkafka/archive/debian/0.9.1-1.zip && \
+    unzip 0.9.1-1.zip && \
+    rm 0.9.1-1.zip && \
+    ls && \
+    cd librdkafka-debian-0.9.1-1 && \
+    ./configure && \
+    make && \
+    make install && ldconfig && \
+    cd ..
