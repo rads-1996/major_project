@@ -2,6 +2,7 @@ import csv
 from confluent_kafka import avro
 from confluent_kafka.avro import AvroProducer
 
+topic = "kddcup"
 value_schema = avro.load('key.avsc')
 key_schema = avro.load('value.avsc')
 
@@ -12,9 +13,10 @@ avroProducer = AvroProducer(
 )
 
 data=csv.reader(open('kddcup.data_10_percent_corrected.txt'),delimiter=',')
-fields=data.next()
-print fields
+fields=data.__next__()
+print(fields)
 for row in data:
-        item=dict(zip(fields,row))
+        item = dict(zip(fields,row))
+        print(item)
         avroProducer.produce(topic=topic, value=item, key="")
 avroProducer.flush()
