@@ -6,7 +6,7 @@ value_location = "value.avsc"
 key_fp = open(key_location)
 value_fp = open(value_location)
 
-#schema_base_url = 'http://localhost:32771/'
+schema_base_url = 'http://schema_registry:8081/'
 print(schema_base_url)
 
 value_resp = requests.post(schema_base_url+'subjects/{}-value/versions'.format(topic),
