@@ -2,6 +2,15 @@ import csv
 from confluent_kafka import avro
 from confluent_kafka.avro import AvroProducer
 
+def create_kddcup_value_record(item):
+    return {
+        "duration": int(item["duration"]),
+        "protocol_type": item["protocol_type"],
+        "service": item["service"],
+        "flag": item["flag"]
+        # so on with other fields
+    }
+
 topic = "kddcup"
 value_schema = avro.load('key.avsc')
 key_schema = avro.load('value.avsc')
@@ -18,5 +27,6 @@ print(fields)
 for row in data:
         item = dict(zip(fields,row))
         print(item)
-        avroProducer.produce(topic=topic, value=item, key="")
+        value_rec = create_kddcup_value_record(item)
+        avroProducer.produce(topic=topic, value=value_rec, key="")
 avroProducer.flush()
