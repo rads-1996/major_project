@@ -18,7 +18,7 @@ class KafkaReader():
         print("Topic name: ", topic_name)
         self.consumer.subscribe([topic_name])
 
-        self.logger.info('Created Avro Consumer', group_id=self.group_id)
+        print('Created Avro Consumer: {}'.format(self.group_id))
 
     def load_records(self):
         """Generator to read messages from Kafka"""
