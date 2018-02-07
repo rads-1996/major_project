@@ -1,0 +1,44 @@
+from confluent_kafka import avro
+from confluent_kafka.avro import AvroConsumer
+from avro.schema import parse as parse_avro
+
+class KafkaReader():
+
+    def __init__(self, topic_name):
+        self.topic_name = topic_name
+        self.group_id = topic_name + "_consumer"
+
+        self.consumer = AvroConsumer({
+            'bootstrap.servers': 'broker:9092',
+            'schema.registry.url': 'http://schema_registry:8081',
+            'group.id': self.group_id,
+            'enable.auto.commit': False,
+            'default.topic.config': {'auto.offset.reset': 'smallest'}
+        })
+        print("Topic name: ", topic_name)
+        self.consumer.subscribe([topic_name])
+
+        self.logger.info('Created Avro Consumer', group_id=self.group_id)
+
+    def load_records(self):
+        """Generator to read messages from Kafka"""
+        while True:
+            msg = self.consumer.poll(4)
+            if msg:
+                if msg.error():
+                    print(msg.error())
+                else:
+                    yield msg
+
+
+    def ack(self):
+        """Attempt to ACK the message.
+        :param record: The message to be ack-ed (deleted)
+        """
+        self.consumer.commit()
+ 
+ 
+ c = KafkaReader('kddcup')
+ while True:
+    for msg in c.load_records():
+        print(msg.key(), msg.value())
