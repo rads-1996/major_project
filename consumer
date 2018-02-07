@@ -37,8 +37,7 @@ class KafkaReader():
         """
         self.consumer.commit()
  
- 
- c = KafkaReader('kddcup')
- while True:
+c = KafkaReader('kddcup')
+while True:
     for msg in c.load_records():
         print(msg.key(), msg.value())
